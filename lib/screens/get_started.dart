@@ -1,93 +1,115 @@
 import 'package:flutter/material.dart';
-import 'onboarding_screen.dart'; //  this is your next screen
+import 'onboarding_screen.dart'; // this is your next screen
 
 class GetStarted extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Set the background color to #C8E0F4
-      backgroundColor: Color(0xFF7AA3D8), // Hex color for #C8E0F4
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Plane Image
-            Image.asset(
-              'assets/plane.png',
-              width: 500,
-              height: 400,
-            ),
-
-
-            // "Track Your Flight" Title
-            Text(
-              'Track',
-              style: TextStyle(
-                color: Colors.white, // Blue accent text color
-                fontSize: 44, // Big font size
-                fontWeight: FontWeight.bold, // Bold style
-                fontFamily: 'Komika X',
-              ),
-            ),
-            Text(
-              'Your',
-              style: TextStyle(
-                color: Colors.white, // Blue accent text color
-                fontSize: 44, // Big font size
-                fontWeight: FontWeight.bold, // Bold style
-                fontFamily: 'Komika X',
-              ),
-            ),
-            Text(
-              'Flight',
-              style: TextStyle(
-                color: Colors.white, // Blue accent text color
-                fontSize: 46, // Big font size
-                fontWeight: FontWeight.bold, // Bold style
-                fontFamily: 'Komika X',
-              ),
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Stay updated with real-time flight data',
-              style: TextStyle(
-                color: Colors.white, // Blue accent text color
-                fontSize: 17,
-              ),
-            ),
-            SizedBox(height: 50), // Spacing between title and button
-
-            // "Get Started" Button
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40), // Add horizontal padding
-              child: ElevatedButton(
-                onPressed: () {
-                  // Navigate to the next screen
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => OnboardingScreen()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.white, // White text color
-                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 95), // Button padding
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(17), // Rounded corners
+      // Gradient background
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF5A7DB8), // Darker shade at the top
+              Color(0xFF7AA3D8), // Lighter shade at the bottom
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch, // Stretch children horizontally
+            children: [
+              // Plane Image with White Circle Background
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: 300, // Smaller circle
+                    height: 300,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white.withOpacity(0.7),
+                    ),
                   ),
-                ),
-                child: Text(
-                  'Get Started',
-                  style: TextStyle(
-                    color: Color(0xFF435EAF),
-                    fontSize: 21, // Big font size
-                    fontWeight: FontWeight.bold, // Bold text
+                  Image.asset(
+                    'assets/plane.png',
+                    width: 400, // Larger plane image
+                    height: 350,
                   ),
+                ],
+              ),
+              SizedBox(height: 30),
+              Text(
+                'Track',
+                textAlign: TextAlign.center, // Center text horizontally
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 44,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Komika X',
                 ),
               ),
-            ),
-            SizedBox(height: 10), // Spacing at the bottom
-          ],
+              Text(
+                'Your',
+                textAlign: TextAlign.center, // Center text horizontally
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 44,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Komika X',
+                ),
+              ),
+              Text(
+                'Flight',
+                textAlign: TextAlign.center, // Center text horizontally
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 46,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Komika X',
+                ),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Stay updated with real-time flight data',
+                textAlign: TextAlign.center, // Center text horizontally
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 17,
+                ),
+              ),
+              SizedBox(height: 50),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => OnboardingScreen()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:Color(0xFF2B437D),
+                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 95),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(17),
+                    ),
+                  ),
+                  child: Text(
+                    'Get Started',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 21,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

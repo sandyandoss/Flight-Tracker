@@ -4,7 +4,7 @@ import '../models/flight.dart';
 import '../services/api_service.dart';
 import '../widgets/flight_list_item.dart';
 import '../widgets/refresh_control.dart';
-import 'search_flight_screen.dart'; // Import the new search page
+import 'filter_flight_screen.dart'; // Import the search page
 
 class FlightsScreen extends StatefulWidget {
   @override
@@ -17,50 +17,27 @@ class _FlightsScreenState extends State<FlightsScreen> {
   bool _autoRefreshEnabled = true;
   DateTime? _lastUpdated;
 
-  // Predefined airports for filtering
-  final List<String> predefinedAirports = ['LAX', 'DBX', 'CDG', 'JFK', 'LHR'];
-  String? _selectedDeparture;
-  String? _selectedArrival;
-
   @override
   void initState() {
     super.initState();
     _fetchFlights();
-    _startTimer();
   }
 
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
-  void _fetchFlights({String? departure, String? arrival}) {
+  void _fetchFlights() {
     setState(() {
-      futureFlights = ApiService().fetchFlights().then((flights) {
-        // Apply filters if provided
-        if (departure != null) {
-          flights = flights.where((flight) => flight.origin == departure).toList();
-        }
-        if (arrival != null) {
-          flights = flights.where((flight) => flight.destination == arrival).toList();
-        }
-
-        setState(() {
-          _lastUpdated = DateTime.now();
-        });
-        return flights;
-      });
+      futureFlights = ApiService().fetchFlights();
+      _lastUpdated = DateTime.now();
     });
   }
 
-  void _startTimer() {
-    if (_autoRefreshEnabled) {
-      _timer = Timer.periodic(Duration(seconds: 10), (timer) {
-        _fetchFlights();
-      });
-    }
-  }
+ /* void _openSearch() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SearchFlightScreen(),
+      ),
+    );
+  } */
 
   void _toggleAutoRefresh() {
     setState(() {
@@ -73,81 +50,16 @@ class _FlightsScreenState extends State<FlightsScreen> {
     });
   }
 
-  void _openSearch() async {
-    // Fetch flights and navigate to the search page
-    final flights = await futureFlights;
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SearchFlightScreen(flights: flights),
-      ),
-    );
+  void _startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 10), (timer) {
+      _fetchFlights();
+    });
   }
 
-  void _openFilterDialog() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Filter Flights'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              DropdownButtonFormField<String>(
-                value: _selectedDeparture,
-                decoration: InputDecoration(labelText: 'Departure Airport'),
-                items: predefinedAirports.map((airport) {
-                  return DropdownMenuItem(
-                    value: airport,
-                    child: Text(airport),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedDeparture = value;
-                  });
-                },
-              ),
-              SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                value: _selectedArrival,
-                decoration: InputDecoration(labelText: 'Arrival Airport'),
-                items: predefinedAirports.map((airport) {
-                  return DropdownMenuItem(
-                    value: airport,
-                    child: Text(airport),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedArrival = value;
-                  });
-                },
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                _applyFilters();
-                Navigator.pop(context);
-              },
-              child: Text('Apply'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _applyFilters() {
-    _fetchFlights(departure: _selectedDeparture, arrival: _selectedArrival);
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -162,15 +74,14 @@ class _FlightsScreenState extends State<FlightsScreen> {
             color: Colors.white,
           ),
         ),
-        actions: [
-          // Search Button
+      /*  actions: [
           IconButton(
             icon: Icon(Icons.search, size: 26),
             onPressed: _openSearch,
           ),
-        ],
+        ],*/
       ),
-      drawer: _buildDashboard(), // Dashboard (Drawer)
+      drawer: _buildDashboard(), // Dashboard Drawer
       body: Column(
         children: [
           if (_lastUpdated != null)
@@ -223,7 +134,6 @@ class _FlightsScreenState extends State<FlightsScreen> {
     );
   }
 
-  // Dashboard (Drawer)
   Widget _buildDashboard() {
     return Drawer(
       child: ListView(
@@ -258,7 +168,9 @@ class _FlightsScreenState extends State<FlightsScreen> {
           ListTile(
             leading: Icon(Icons.filter_alt, size: 26),
             title: Text('Filter Flights'),
-            onTap: _openFilterDialog,
+            onTap: () {
+              // Implement filter functionality if needed
+            },
           ),
         ],
       ),
