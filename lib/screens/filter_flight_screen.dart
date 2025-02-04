@@ -14,222 +14,354 @@ class FilterFlightScreen extends StatefulWidget {
 class _FilterFlightScreenState extends State<FilterFlightScreen> {
   final TextEditingController _departureController = TextEditingController();
   final TextEditingController _arrivalController = TextEditingController();
-
+  bool _isDeparture = true;
   final List<String> predefinedAirports = ['LAX', 'JFK', 'CDG', 'DXB', 'LHR'];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: const Color(0xFF7AA3D8),
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF5A7DB8), Color(0xFF7AA3D8)],
+          ),
+        ),
         child: Column(
           children: [
             Container(
-              height: 200,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(300),
-                  bottomRight: Radius.circular(300),
-                ),
-              ),
-              child: Center(child: Image.asset('assets/plane.png')),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Find your flight',
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: 40,
-                  width: 140,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromRGBO(64, 147, 206, 100),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    onPressed: () {
-                      // Handle Departures button press
-                    },
-                    child: const Text(
-                      'Departures',
-                      style: TextStyle(fontSize: 14, color: Colors.white),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Container(
-                  height: 40,
-                  width: 140,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromRGBO(215, 234, 248, 100),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    onPressed: () {
-                      // Handle Arrivals button press
-                    },
-                    child: const Text(
-                      'Arrivals',
-                      style: TextStyle(fontSize: 14, color: Colors.white),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.all(10),
-              width: 308,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              height: 250,
+              padding: const EdgeInsets.only(top: 50),
+              child: Stack(
+                alignment: Alignment.center,
                 children: [
-                  const Text('From'),
-                  const SizedBox(height: 5),
-                  DropdownButtonFormField<String>(
-                    value: _departureController.text.isEmpty
-                        ? null
-                        : _departureController.text,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      filled: true,
-                      fillColor: Color.fromRGBO(224, 237, 246, 100),
-                    ),
-                    items: predefinedAirports.map((airport) {
-                      return DropdownMenuItem(
-                        value: airport,
-                        child: Text(airport),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        _departureController.text = value!;
-                      });
-                    },
-                    hint: const Text('Select departure airport'),
-                  ),
-                  const SizedBox(height: 10),
-                  const Text('To'),
-                  const SizedBox(height: 5),
-                  DropdownButtonFormField<String>(
-                    value: _arrivalController.text.isEmpty
-                        ? null
-                        : _arrivalController.text,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      filled: true,
-                      fillColor: Color.fromRGBO(224, 237, 246, 100),
-                    ),
-                    items: predefinedAirports.map((airport) {
-                      return DropdownMenuItem(
-                        value: airport,
-                        child: Text(airport),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        _arrivalController.text = value!;
-                      });
-                    },
-                    hint: const Text('Select arrival airport'),
-                  ),
-                  const SizedBox(height: 10),
-                  Container(
-                    height: 50,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                        const Color.fromRGBO(64, 147, 206, 100),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
+                  Positioned(
+                    top: -50,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 1.5,
+                      height: 300,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.1),
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(300),
+                          bottomRight: Radius.circular(300),
                         ),
                       ),
-                      onPressed: () {
-                        final departure = _departureController.text;
-                        final arrival = _arrivalController.text;
-                        if (departure.isNotEmpty && arrival.isNotEmpty) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => FilteredFlightsScreen(
-                                  flights: []), // Mock flights for now
-                            ),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                  'Please select both departure and arrival airports.'),
-                            ),
-                          );
-                        }
-                      },
-                      child: const Text(
-                        'Filter Flights',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white,
-                        ),
-                      ),
+                    ),
+                  ),
+                  AnimatedPositioned(
+                    duration: const Duration(milliseconds: 500),
+                    top: _isDeparture ? 40 : 60,
+                    child: Image.asset(
+                      'assets/plane.png',
+                      width: 200,
+                      color: Colors.white.withOpacity(0.9),
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 20),
-            Container(
-              height: 50,
-              width: 280,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(64, 147, 206, 100),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Column(
+                children: [
+                  const Text(
+                    'Find Your Flight',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      letterSpacing: 1.2,
+                    ),
                   ),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => FlightsScreen()),
-                  );
-                },
-                child: const Text(
-                  'View All Flights',
-                  style: TextStyle(fontSize: 14, color: Colors.white),
-                ),
+                  const SizedBox(height: 30),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: ChoiceChip(
+                            label: const Text('Departures'),
+                            selected: _isDeparture,
+                            onSelected: (bool selected) {
+                              setState(() {
+                                _isDeparture = selected;
+                              });
+                            },
+                            backgroundColor: Colors.transparent,
+                            selectedColor: Colors.white,
+                            labelStyle: TextStyle(
+                              color: _isDeparture
+                                  ? const Color(0xFF2B437D)
+                                  : const Color(0xFF7AA3D8),
+                              fontWeight: FontWeight.bold,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: ChoiceChip(
+                            label: const Text('Arrivals'),
+                            selected: !_isDeparture,
+                            onSelected: (bool selected) {
+                              setState(() {
+                                _isDeparture = !selected;
+                              });
+                            },
+                            backgroundColor: Colors.transparent,
+                            selectedColor: Colors.white,
+                            labelStyle: TextStyle(
+                              color: !_isDeparture
+                                  ? const Color(0xFF2B437D)
+                                  : const Color(0xFF7AA3D8),
+                              fontWeight: FontWeight.bold,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Container(
+                    padding: const EdgeInsets.all(25),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(25),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 20,
+                          spreadRadius: 5,
+                          offset: const Offset(0, 5),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        _buildModernDropdown(
+                          controller: _departureController,
+                          label: 'From',
+                          icon: Icons.flight_takeoff_rounded,
+                        ),
+                        const SizedBox(height: 20),
+                        _buildModernDropdown(
+                          controller: _arrivalController,
+                          label: 'To',
+                          icon: Icons.flight_land_rounded,
+                        ),
+                        const SizedBox(height: 30),
+                        Container(
+                          height: 55,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFF5A7DB8), Color(0xFF7AA3D8)],
+                            ),
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                blurRadius: 10,
+                                spreadRadius: 2,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                            onPressed: () {
+                              final departure = _departureController.text;
+                              final arrival = _arrivalController.text;
+                              if (departure.isNotEmpty && arrival.isNotEmpty) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                    const FilteredFlightsScreen(flights: []),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                        'Please select both departure and arrival airports.'),
+                                  ),
+                                );
+                              }
+                            },
+                            child: const Text(
+                              'Search Flights',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => FlightsScreen()),
+                      );
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      textStyle: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                    child: const Text('View All Flights'),
+                  ),
+                ],
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildModernDropdown({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(icon, color: Colors.grey.shade600, size: 20),
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: TextStyle(
+                color: Colors.grey.shade700,
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        GestureDetector(
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              backgroundColor: Colors.transparent,
+              builder: (context) {
+                return Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(25),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 20,
+                        spreadRadius: 5,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Select $label Airport',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF2B437D),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      ...predefinedAirports.map((airport) {
+                        return ListTile(
+                          leading: Icon(
+                            Icons.airplanemode_active_rounded,
+                            color: Colors.grey.shade600,
+                          ),
+                          title: Text(
+                            airport,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.grey.shade800,
+                            ),
+                          ),
+                          onTap: () {
+                            setState(() {
+                              controller.text = airport;
+                            });
+                            Navigator.pop(context);
+                          },
+                        );
+                      }).toList(),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: Colors.grey.shade300,
+                width: 1,
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  controller.text.isEmpty ? 'Select airport' : controller.text,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: controller.text.isEmpty
+                        ? Colors.grey.shade600
+                        : Colors.grey.shade800,
+                  ),
+                ),
+                Icon(
+                  Icons.arrow_drop_down_rounded,
+                  color: Colors.grey.shade600,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

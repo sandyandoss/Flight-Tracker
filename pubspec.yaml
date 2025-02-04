@@ -59,6 +59,10 @@ flutter:
   assets:
     - assets/fonts/KOMIKAX_.ttf
     - assets/plane.png
+    - assets/onboarding1.png
+    - assets/onboarding2.png
+    - assets/onboarding3.png
+
 
   #   - images/a_dot_ham.jpeg
 

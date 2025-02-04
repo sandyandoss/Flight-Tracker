@@ -1,10 +1,10 @@
 class Flight {
-  final String? flightNumber;
-  final String? origin;
-  final String? destination;
-  final String? departureTime;
-  final String? arrivalTime;
-  final String? status; // e.g., "On Time", "Delayed", "Cancelled"
+  final String flightNumber;
+  final String origin;
+  final String destination;
+  final String departureTime;
+  final String arrivalTime;
+  final String status;
 
   Flight({
     required this.flightNumber,
@@ -17,16 +17,15 @@ class Flight {
 
   factory Flight.fromJson(Map<String, dynamic> json) {
     return Flight(
-      flightNumber: json['flight']?['iata'],
-      origin: json['departure']?['airport'],
-      destination: json['arrival']?['airport'],
-      departureTime: json['departure']?['scheduled'],
-      arrivalTime: json['arrival']?['scheduled'],
-      status: json['flight_status'],
+      flightNumber: json['flight']['iata'] ?? 'Unknown',
+      origin: json['departure']['iata'] ?? 'Unknown',
+      destination: json['arrival']['iata'] ?? 'Unknown',
+      departureTime: json['departure']['scheduled'] ?? 'Unknown',
+      arrivalTime: json['arrival']['scheduled'] ?? 'Unknown',
+      status: json['flight_status'] ?? 'Unknown',
     );
   }
 }
-
   /* Example of JSON
   {
   "flight": {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'filter_flight_screen.dart';
-import 'get_started.dart'; // Import the get started screen
+import 'get_started.dart';
 
 class OnboardingScreen extends StatefulWidget {
   @override
@@ -9,19 +9,23 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   int _currentStep = 0;
+  final PageController _pageController = PageController();
 
   final List<Map<String, String>> _steps = [
     {
       'title': 'Welcome to Flight Tracker!',
       'description': 'Track real-time flights, departures, arrivals, and delays.',
+      'image': 'assets/onboarding1.png', // Add your image assets
     },
     {
       'title': 'Flight Status Updates',
       'description': 'Stay updated on the status of flights, whether on time or delayed.',
+      'image': 'assets/onboarding2.png',
     },
     {
       'title': 'Auto-Refresh Flight Data',
       'description': 'Auto-refresh every 10 seconds to stay current with flight information.',
+      'image': 'assets/onboarding3.png',
     },
   ];
 
@@ -32,94 +36,188 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  // Handle back button press
   Future<bool> _onWillPop() async {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => GetStarted()),
     );
-    return Future.value(false); // Prevent default back action
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: _onWillPop, // Handle back button press
+      onWillPop: _onWillPop,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
           actions: [
             TextButton(
               onPressed: _navigateToFilterFlightScreen,
               child: Text(
                 'Skip',
-                style: TextStyle(color: Colors.blue, fontSize: 16),
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: List.generate(
-                  _steps.length,
-                      (index) => Expanded(
-                    child: Container(
-                      height: 4,
-                      margin: EdgeInsets.symmetric(horizontal: 4),
-                      decoration: BoxDecoration(
-                        color: _currentStep == index ? Colors.blue : Colors.grey[300],
-                        borderRadius: BorderRadius.circular(2),
+        body: Column(
+          children: [
+            Expanded(
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: _steps.length,
+                onPageChanged: (index) {
+                  setState(() => _currentStep = index);
+                },
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Positioned(
+                                top: 50,
+                                child: Container(
+                                  width: 300,
+                                  height: 300,
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue.withOpacity(0.1),
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                              ),
+                              Image.asset(
+                                _steps[index]['image']!,
+                                height: MediaQuery.of(context).size.height * 0.4,
+                                fit: BoxFit.contain,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 40),
+                        AnimatedSwitcher(
+                          duration: Duration(milliseconds: 300),
+                          child: Column(
+                            key: ValueKey<int>(_currentStep),
+                            children: [
+                              Text(
+                                _steps[index]['title']!,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue[900],
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
+                              const SizedBox(height: 24),
+                              Text(
+                                _steps[index]['description']!,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.grey[700],
+                                  height: 1.5,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      _steps.length,
+                          (index) => AnimatedContainer(
+                        duration: Duration(milliseconds: 300),
+                        width: _currentStep == index ? 24 : 8,
+                        height: 8,
+                        margin: EdgeInsets.symmetric(horizontal: 4),
+                        decoration: BoxDecoration(
+                          color: _currentStep == index
+                              ? Colors.blue[800]
+                              : Colors.blue.withOpacity(0.3),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
-              SizedBox(height: 40),
-              Text(
-                _steps[_currentStep]['title']!,
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
-              SizedBox(height: 16),
-              Text(
-                _steps[_currentStep]['description']!,
-                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-              ),
-              Spacer(),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_currentStep < _steps.length - 1) {
-                      setState(() {
-                        _currentStep++;
-                      });
-                    } else {
-                      _navigateToFilterFlightScreen();
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF7AA3D8),
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(17),
+                  const SizedBox(height: 32),
+                  SizedBox(
+                    width: double.infinity,
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 300),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Color(0xFF7AA3D8), Color(0xFF4169E1)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.blue.withOpacity(0.3),
+                            blurRadius: 10,
+                            offset: Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_currentStep < _steps.length - 1) {
+                            _pageController.nextPage(
+                              duration: Duration(milliseconds: 500),
+                              curve: Curves.easeInOut,
+                            );
+                          } else {
+                            _navigateToFilterFlightScreen();
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          padding: EdgeInsets.symmetric(vertical: 18),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: Text(
+                          _currentStep == _steps.length - 1
+                              ? 'Get Started'
+                              : 'Continue',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  child: Text(
-                    _currentStep == _steps.length - 1 ? 'Get Started' : 'Next',
-                    style: TextStyle(fontSize: 21, color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
