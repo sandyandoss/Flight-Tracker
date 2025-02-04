@@ -65,11 +65,18 @@ class _FlightsScreenState extends State<FlightsScreen> {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        backgroundColor: Color(0xFF5A7DB8),
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(15),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF5A7DB8), Color(0xFF7AA3D8)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(20),
+            ),
           ),
         ),
         title: Text(
@@ -77,10 +84,15 @@ class _FlightsScreenState extends State<FlightsScreen> {
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
-            fontSize: 22,
+            fontSize: 24,
           ),
         ),
         centerTitle: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20),
+          ),
+        ),
       ),
       drawer: _buildDashboard(),
       body: Column(
@@ -176,12 +188,23 @@ class _FlightsScreenState extends State<FlightsScreen> {
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
                         final flight = snapshot.data![index];
-                        return Card(
+                        return Container(
                           margin: EdgeInsets.symmetric(
                               horizontal: 16, vertical: 8),
-                          elevation: 4,
-                          shape: RoundedRectangleBorder(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Color(0xFF5A7DB8), Color(0xFF7AA3D8)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
                             borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 10,
+                                offset: Offset(0, 5),
+                              ),
+                            ],
                           ),
                           child: FlightListItem(flight: flight),
                         );

@@ -1,111 +1,75 @@
 import 'package:flutter/material.dart';
+import '../models/flight.dart';
 
 class FilteredFlightsScreen extends StatelessWidget {
-  final List<dynamic> flights; // List of flights to display
+  final List<Flight> flights;
 
-  const FilteredFlightsScreen({Key? key, required this.flights}) : super(key: key);
+  const FilteredFlightsScreen({super.key, required this.flights});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Filtered Flights'),
-        backgroundColor: Color(0xFF7AA3D8), // Match your app's theme
+        title: const Text('Filtered Flights'),
+        backgroundColor: Color(0xFF5A7DB8),
       ),
-      body: Container(
-        color: Color(0xFF7AA3D8), // Background color
-        child: flights.isEmpty
-            ? Center(
-          child: Text(
-            'No flights found.',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-            ),
+      body: flights.isEmpty
+          ? Center(
+        child: Text(
+          'No flights found.',
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.grey[800],
           ),
-        )
-            : ListView.builder(
-          padding: EdgeInsets.all(16),
-          itemCount: flights.length,
-          itemBuilder: (context, index) {
-            final flight = flights[index];
-            return FlightCard(flight: flight);
-          },
         ),
-      ),
-    );
-  }
-}
-
-class FlightCard extends StatelessWidget {
-  final dynamic flight;
-
-  const FlightCard({Key? key, required this.flight}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.only(bottom: 16),
-      child: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Flight Number: ${flight['flight']['iata'] ?? 'N/A'}',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+      )
+          : ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: flights.length,
+        itemBuilder: (context, index) {
+          final flight = flights[index];
+          return Card(
+            margin: const EdgeInsets.symmetric(vertical: 8),
+            elevation: 4,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: ListTile(
+              leading: _getStatusIcon(flight.status),
+              title: Text(
+                'Flight ${flight.flightNumber}',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Departure: ${flight.origin}'),
+                  Text('Arrival: ${flight.destination}'),
+                  Text('Departure Time: ${flight.departureTime}'),
+                  Text('Arrival Time: ${flight.arrivalTime}'),
+                ],
               ),
             ),
-            SizedBox(height: 8),
-            Text(
-              'Airline: ${flight['airline']['name'] ?? 'N/A'}',
-              style: TextStyle(
-                fontSize: 16,
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Departure: ${flight['departure']['airport'] ?? 'N/A'} (${flight['departure']['iata'] ?? 'N/A'})',
-              style: TextStyle(
-                fontSize: 16,
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Arrival: ${flight['arrival']['airport'] ?? 'N/A'} (${flight['arrival']['iata'] ?? 'N/A'})',
-              style: TextStyle(
-                fontSize: 16,
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Status: ${flight['flight_status'] ?? 'N/A'}',
-              style: TextStyle(
-                fontSize: 16,
-                color: _getStatusColor(flight['flight_status']),
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 
-  // Helper function to get status color
-  Color _getStatusColor(String? status) {
-    switch (status) {
+  Widget _getStatusIcon(String status) {
+    switch (status.toLowerCase()) {
       case 'scheduled':
-        return Colors.blue;
       case 'active':
-        return Colors.green;
-      case 'landed':
-        return Colors.orange;
+        return Icon(Icons.check_circle, color: Colors.green);
+      case 'delayed':
+        return Icon(Icons.warning, color: Colors.orange);
       case 'cancelled':
-        return Colors.red;
+        return Icon(Icons.cancel, color: Colors.red);
       default:
-        return Colors.black;
+        return Icon(Icons.help, color: Colors.grey);
     }
   }
 }
