@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'onboarding_screen.dart'; // this is your next screen
+import 'onboarding_screen.dart';
 
 class GetStarted extends StatelessWidget {
   @override
@@ -12,7 +12,7 @@ class GetStarted extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF5A7DB8), // Darker shade at the top
+              Color(0xFF5A7DB8),
               Color(0xFF7AA3D8), // Lighter shade at the bottom
             ],
           ),
@@ -20,8 +20,11 @@ class GetStarted extends StatelessWidget {
         child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch, // Stretch children horizontally
+            crossAxisAlignment: CrossAxisAlignment.stretch, // Stretchin children horizontally
             children: [
+
+
+
               // Plane Image with White Circle Background
               Stack(
                 alignment: Alignment.center,
@@ -36,6 +39,7 @@ class GetStarted extends StatelessWidget {
                   ),
                   Image.asset(
                     'assets/plane.png',
+
                     width: 400, // Larger plane image
                     height: 350,
                   ),
@@ -54,7 +58,7 @@ class GetStarted extends StatelessWidget {
               ),
               Text(
                 'Your',
-                textAlign: TextAlign.center, // Center text horizontally
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 44,
@@ -64,7 +68,7 @@ class GetStarted extends StatelessWidget {
               ),
               Text(
                 'Flight',
-                textAlign: TextAlign.center, // Center text horizontally
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 46,
@@ -75,7 +79,7 @@ class GetStarted extends StatelessWidget {
               SizedBox(height: 10),
               Text(
                 'Stay updated with real-time flight data',
-                textAlign: TextAlign.center, // Center text horizontally
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 17,

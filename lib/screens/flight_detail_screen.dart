@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../models/flight.dart';
-import 'flights_screen.dart'; // ✅ Import FlightsScreen
+
 
 class FlightDetailScreen extends StatefulWidget {
   final Flight flight;
@@ -24,6 +24,12 @@ class _FlightDetailScreenState extends State<FlightDetailScreen>
       vsync: this,
       duration: Duration(milliseconds: 800),
     );
+
+
+
+
+
+
 
     _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
@@ -48,7 +54,7 @@ class _FlightDetailScreenState extends State<FlightDetailScreen>
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: Colors.white), // 🔙 Back Button
           onPressed: () {
-            Navigator.pop(context); // ✅ Navigate back to FlightsScreen
+            Navigator.pop(context);
           },
         ),
         title: Text(
@@ -64,11 +70,13 @@ class _FlightDetailScreenState extends State<FlightDetailScreen>
       ),
       body: Stack(
         children: [
-          /// Background Image with Dark Overlay
+
+
+          // Background Image with Dark Overlay
           Positioned.fill(
             child: ColorFiltered(
               colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.4), // ✅ Increased opacity for better contrast
+                Colors.black.withOpacity(0.4),
                 BlendMode.darken,
               ),
               child: Image.asset(
@@ -78,17 +86,17 @@ class _FlightDetailScreenState extends State<FlightDetailScreen>
             ),
           ),
 
-          /// Glassmorphic Flight Details Card (Fixed Visibility)
+
           Center(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), // ✅ Glass effect
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 20),
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.84), // ✅ 84% opacity for visibility
+                    color: Colors.white.withOpacity(0.84),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: Colors.grey.withOpacity(0.5)),
                     boxShadow: [
@@ -129,7 +137,7 @@ class _FlightDetailScreenState extends State<FlightDetailScreen>
             style: TextStyle(
               fontFamily: 'Poppins',
               fontSize: 18,
-              color: Colors.blueGrey[700], // ✅ Darker blue-grey for better contrast
+              color: Colors.blueGrey[700],
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -138,7 +146,7 @@ class _FlightDetailScreenState extends State<FlightDetailScreen>
             style: TextStyle(
               fontFamily: 'Poppins',
               fontSize: 17,
-              color: Colors.blueGrey[900], // ✅ Darker text for visibility
+              color: Colors.blueGrey[900],
               fontWeight: FontWeight.bold,
             ),
           ),

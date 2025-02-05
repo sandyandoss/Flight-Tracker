@@ -5,7 +5,7 @@ import '../models/flight.dart';
 import '../services/api_service.dart';
 import '../widgets/refresh_control.dart';
 import 'flight_detail_screen.dart';
-import 'filter_flight_screen.dart'; // Make sure to import your filter screen
+import 'filter_flight_screen.dart';
 
 class FlightsScreen extends StatefulWidget {
   @override

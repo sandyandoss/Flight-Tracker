@@ -10,14 +10,14 @@ class ApiService {
 
     // Check if the request was successful
     if (response.statusCode == 200) {
-      // Parse the JSON response
+      // parse the JSON response
       final data = json.decode(response.body);
-      // Extract the list of flights from the "data" field
+      // extract the list of flights from the "data" field
       final List<dynamic> flightsJson = data['data'];
       // Convert each JSON object into a Flight object
       return flightsJson.map((json) => Flight.fromJson(json)).toList();
     } else {
-      // Handle API errors
+     //to handle api errors
       throw Exception('Failed to load flights');
     }
   }

@@ -7,7 +7,7 @@ class FlightListItem extends StatelessWidget {
 
   FlightListItem({required this.flight});
 
-  // Helper method to get icon and color based on flight status
+
   Widget _getStatusIcon(String? status) {
     switch (status?.toLowerCase()) {
       case 'on time':

@@ -10,7 +10,7 @@ class WeatherScreen extends StatefulWidget {
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
-  final String apiKey = 'YOUR_API_KEY'; // Replace with your OpenWeatherMap API key
+  final String apiKey = '9325b573afc780490e754c68052c9105';
   final TextEditingController _searchController = TextEditingController();
   Map<String, dynamic>? _weatherData;
   bool _isLoading = false;
@@ -109,7 +109,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
         actions: [
           IconButton(
             icon: Icon(Icons.location_on, color: Colors.blue[600]),
-            onPressed: () {/* Add geolocation */},
+            onPressed: () {},
           )
         ],
       ),
@@ -123,7 +123,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
           ),
         ),
         child: SafeArea(
-          child: SingleChildScrollView( // Wrap the Column in a SingleChildScrollView
+          child: SingleChildScrollView( // Wrap the Column in a SingleChildScrollView kermel l overflow
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
@@ -137,9 +137,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     SizedBox(height: 30),
                     _buildHourlyForecast(),
                     SizedBox(height: 30),
-                    _buildWeatherGrid(), // Removed Expanded
+                    _buildWeatherGrid(),
                   ],
-                  SizedBox(height: 20), // Add spacing at the bottom
+                  SizedBox(height: 20),
                   _buildUnitToggle(),
                 ],
               ),
@@ -259,7 +259,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   Widget _buildHourlyForecast() {
     return Container(
-      height: 120, // Fixed height to prevent overflow
+      height: 120,
       child: ListView.builder(
         shrinkWrap: true,
         physics: ClampingScrollPhysics(),
@@ -316,7 +316,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   Widget _buildWeatherGrid() {
     return GridView.count(
       shrinkWrap: true, // Add this
-      physics: NeverScrollableScrollPhysics(), // Prevent nested scrolling
+      physics: NeverScrollableScrollPhysics(), //to prevent nested scrolling
       crossAxisCount: 2,
       childAspectRatio: 1.4,
       crossAxisSpacing: 15,

@@ -15,7 +15,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     {
       'title': 'Welcome to Flight Tracker!',
       'description': 'Track real-time flights, departures, arrivals, and delays.',
-      'image': 'assets/onboarding1.png', // Add your image assets
+      'image': 'assets/onboarding1.png',
     },
     {
       'title': 'Flight Status Updates',
