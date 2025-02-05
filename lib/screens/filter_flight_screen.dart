@@ -32,7 +32,7 @@ class _FilterFlightScreenState extends State<FilterFlightScreen> {
           children: [
             Container(
               height: 250,
-              padding: const EdgeInsets.only(top: 50),
+
               child: Stack(
                 alignment: Alignment.center,
                 children: [
@@ -43,20 +43,17 @@ class _FilterFlightScreenState extends State<FilterFlightScreen> {
                       height: 300,
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.1),
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(300),
-                          bottomRight: Radius.circular(300),
-                        ),
+
                       ),
                     ),
                   ),
                   AnimatedPositioned(
-                    duration: const Duration(milliseconds: 500),
-                    top: _isDeparture ? 40 : 60,
+                    duration: const Duration(milliseconds: 600),
+                    top: _isDeparture ? 50 : 95,
                     child: Image.asset(
-                      'assets/plane.png',
-                      width: 200,
-                      color: Colors.white.withOpacity(0.9),
+                      'assets/R.png',
+                      width: 255,
+                      color: Colors.black.withOpacity(1),
                     ),
                   ),
                 ],
@@ -69,8 +66,9 @@ class _FilterFlightScreenState extends State<FilterFlightScreen> {
                   const Text(
                     'Find Your Flight',
                     style: TextStyle(
+                      fontFamily: 'Komika X',
                       fontSize: 32,
-                      fontWeight: FontWeight.bold,
+
                       color: Colors.white,
                       letterSpacing: 1.2,
                     ),
