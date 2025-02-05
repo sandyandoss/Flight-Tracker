@@ -5,6 +5,7 @@ class Flight {
   final String departureTime;
   final String arrivalTime;
   final String status;
+  final String airline;
 
   Flight({
     required this.flightNumber,
@@ -13,6 +14,8 @@ class Flight {
     required this.departureTime,
     required this.arrivalTime,
     required this.status,
+    required this.airline,
+
   });
 
   factory Flight.fromJson(Map<String, dynamic> json) {
@@ -22,7 +25,7 @@ class Flight {
       destination: json['arrival']['iata'] ?? 'Unknown',
       departureTime: json['departure']['scheduled'] ?? 'Unknown',
       arrivalTime: json['arrival']['scheduled'] ?? 'Unknown',
-      status: json['flight_status'] ?? 'Unknown',
+      status: json['flight_status'] ?? 'Unknown', airline: '',
     );
   }
 }

@@ -63,6 +63,8 @@ flutter:
     - assets/onboarding2.png
     - assets/onboarding3.png
     - assets/R.png
+    - assets/fonts/Poppins-Regular.ttf
+    - assets/flight_bg.jpg
 
 
   #   - images/a_dot_ham.jpeg
