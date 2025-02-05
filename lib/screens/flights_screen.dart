@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flight_tracker/screens/weather_screen.dart';
 import 'package:flutter/material.dart';
 import '../models/flight.dart';
 import '../services/api_service.dart';
@@ -282,6 +283,16 @@ class _FlightsScreenState extends State<FlightsScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => FilterFlightScreen()),
+                );
+              },
+            ),
+            _buildDrawerItem(
+              icon: Icons.wb_sunny, // Weather icon
+              title: 'Weather',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => WeatherScreen()),
                 );
               },
             ),
