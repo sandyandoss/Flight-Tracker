@@ -1,55 +1,120 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 import '../models/flight.dart';
 
-class FilteredFlightsScreen extends StatelessWidget {
-  final List<Flight> flights;
 
-  const FilteredFlightsScreen({super.key, required this.flights});
+class FilteredFlightsScreen extends StatefulWidget {
+  final String departure;
+  final String arrival;
+
+  const FilteredFlightsScreen({
+    required this.departure,
+    required this.arrival,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<FilteredFlightsScreen> createState() => _FilteredFlightsScreenState();
+}
+
+class _FilteredFlightsScreenState extends State<FilteredFlightsScreen> {
+  List<Flight> flights = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchFlights();
+  }
+
+  Future<void> fetchFlights() async {
+    const String apiKey = '03173056700d76e1d58557d2ced95e19';
+    final String url =
+        'http://api.aviationstack.com/v1/flights?access_key=$apiKey&dep_iata=${widget.departure}&arr_iata=${widget.arrival}&limit=10';
+
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        final List<dynamic> flightData = data['data'] ?? [];
+
+        setState(() {
+          flights = flightData.map((json) => Flight.fromJson(json)).toList();
+          isLoading = false;
+        });
+      } else {
+        throw Exception('Failed to load flights');
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error fetching flights: $e')),
+      );
+    }
+  }
+
+  Color getStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'active':
+      case 'scheduled':
+        return Colors.green;
+      case 'cancelled':
+      case 'diverted':
+        return Colors.red;
+      case 'landed':
+        return Colors.blue;
+      default:
+        return Colors.orange;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Filtered Flights'),
-        backgroundColor: Color(0xFF5A7DB8),
-      ),
-      body: flights.isEmpty
-          ? Center(
-        child: Text(
-          'No flights found.',
-          style: TextStyle(
-            fontSize: 18,
-            color: Colors.grey[800],
-          ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: const Text(
+          "Filtered Flights",
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFF5A7DB8)),
         ),
-      )
+        centerTitle: true,
+      ),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : flights.isEmpty
+          ? const Center(child: Text('No flights found.'))
           : ListView.builder(
-        padding: const EdgeInsets.all(16),
         itemCount: flights.length,
         itemBuilder: (context, index) {
           final flight = flights[index];
           return Card(
-            margin: const EdgeInsets.symmetric(vertical: 8),
-            elevation: 4,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
+            margin: const EdgeInsets.all(10),
+            elevation: 5,
             child: ListTile(
-              leading: _getStatusIcon(flight.status),
               title: Text(
-                'Flight ${flight.flightNumber}',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                '${flight.airline} - ${flight.flightNumber}',
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Departure: ${flight.origin}'),
-                  Text('Arrival: ${flight.destination}'),
-                  Text('Departure Time: ${flight.departureTime}'),
-                  Text('Arrival Time: ${flight.arrivalTime}'),
+                  Text('From: ${flight.origin}'),
+                  Text('To: ${flight.destination}'),
+                  Text('Departure: ${flight.departureTime}'),
+                  Text('Arrival: ${flight.arrivalTime}'),
+                  Text(
+                    'Status: ${flight.status}',
+                    style: TextStyle(
+                      color: getStatusColor(flight.status),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -57,19 +122,5 @@ class FilteredFlightsScreen extends StatelessWidget {
         },
       ),
     );
-  }
-
-  Widget _getStatusIcon(String status) {
-    switch (status.toLowerCase()) {
-      case 'scheduled':
-      case 'active':
-        return Icon(Icons.check_circle, color: Colors.green);
-      case 'delayed':
-        return Icon(Icons.warning, color: Colors.orange);
-      case 'cancelled':
-        return Icon(Icons.cancel, color: Colors.red);
-      default:
-        return Icon(Icons.help, color: Colors.grey);
-    }
   }
 }

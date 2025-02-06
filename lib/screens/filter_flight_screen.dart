@@ -184,19 +184,21 @@ class _FilterFlightScreenState extends State<FilterFlightScreen> {
                             onPressed: () {
                               final departure = _departureController.text;
                               final arrival = _arrivalController.text;
+
                               if (departure.isNotEmpty && arrival.isNotEmpty) {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                    const FilteredFlightsScreen(flights: []),
+                                    builder: (context) => FilteredFlightsScreen(
+                                      departure: departure,
+                                      arrival: arrival,
+                                    ),
                                   ),
                                 );
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text(
-                                        'Please select both departure and arrival airports.'),
+                                    content: Text('Please select both departure and arrival airports.'),
                                   ),
                                 );
                               }
