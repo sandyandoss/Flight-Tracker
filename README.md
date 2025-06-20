@@ -1,5 +1,5 @@
 # ✈️ Flight Tracker App – Made with Flutter 💙
-![GitHub Repo stars](https://img.shields.io/github/stars/sandyandoss/flight-tracker-flutter?style=social)
+![GitHub Repo stars](https://img.shields.io/github/stars/sandyandoss/Flight-Tracker?style=social)
 
 Welcome to **Flight Tracker**, a beautiful and functional mobile app built with Flutter!  
 Easily track **live flight arrivals, departures, delays**, and even get the **current weather** at your airport of choice!  
