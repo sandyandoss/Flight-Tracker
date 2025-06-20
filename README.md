@@ -38,5 +38,8 @@ Powered by the [AviationStack API](https://aviationstack.com/).
 | **Testing** | Flutter test framework |
 
 ---
-🔐 Don’t forget to add your AviationStack API key in lib/services/api_service.dart.
+🔐 To run this app, create a `lib/utils/constants.dart` file with your AviationStack API key:
 
+```dart
+const String baseUrl = 'http://api.aviationstack.com/v1';
+const String apiKey = 'YOUR_REAL_API_KEY';
