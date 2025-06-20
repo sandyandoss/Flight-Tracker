@@ -1,0 +1,2 @@
+C:/Users/Lenovo/Desktop/Flight Tracker/Flight-Tracker/android/app/.cxx/Debug/56111t1a/x86/CMakeFiles/edit_cache.dir
+C:/Users/Lenovo/Desktop/Flight Tracker/Flight-Tracker/android/app/.cxx/Debug/56111t1a/x86/CMakeFiles/rebuild_cache.dir
