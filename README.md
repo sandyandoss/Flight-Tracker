@@ -1,17 +1,42 @@
-# flight_tracker
+# ✈️ Flight Tracker App – Made with Flutter 💙
 
-A new Flutter project.
+Welcome to **Flight Tracker**, a beautiful and functional mobile app built with Flutter!  
+Easily track **live flight arrivals, departures, delays**, and even get the **current weather** at your airport of choice!  
+Powered by the [AviationStack API](https://aviationstack.com/).
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 📸 Sneak Peek – Screenshots
 
-A few resources to get you started if this is your first Flutter project:
+| Welcome | Home | Filtered |
+|--------|------|----------|
+| ![Welcome](assets/screenshots/Welcome.png) | ![Home](assets/screenshots/Home.png) | ![Filtered](assets/screenshots/Filtered.png) |
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+| Details | List | Weather |
+|--------|------|----------|
+| ![Details](assets/screenshots/Details.png) | ![List](assets/screenshots/List.png) | ![Weather](assets/screenshots/Weather.png) |
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# Flight-Tracker
+---
+
+## ✨ Features You’ll Love
+
+- 📡 **Live Flight Data** – Real-time arrivals, departures & delays
+- 🔍 **Smart Filters** – View by airport, status, and more
+- 🌤️ **Weather Reports** – Get live weather at airport locations
+- 📱 **Sleek UI** – Clean, responsive design that’s easy to navigate
+- 🧪 **Built-In Testing** – Flutter test suite for key components
+
+---
+
+## 🛠️ Tech Stack
+
+| 🧩 Tool | 📋 Description |
+|--------|----------------|
+| **Flutter & Dart** | UI toolkit & language |
+| **REST API** | AviationStack for real-time flight info |
+| **State Management** | SetState + Provider (or your preferred method) |
+| **Testing** | Flutter test framework |
+
+---
+🔐 Don’t forget to add your AviationStack API key in lib/services/api_service.dart.
+
